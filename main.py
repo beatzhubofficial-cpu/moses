@@ -3,7 +3,7 @@ import sqlite3
 from pathlib import Path
 
 DB_PATH = Path(__file__).resolve().parent / "school.db"
-SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sql"
+SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sqlite.sql"
 
 
 def get_connection():

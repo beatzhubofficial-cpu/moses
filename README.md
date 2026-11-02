@@ -1,39 +1,47 @@
 # School Database Project
 
-A lightweight SQLite-based school database for tracking students, courses, teachers, enrollments, and attendance.
+A school database project with a MySQL/MariaDB schema and a separate SQLite command-line demo.
 
-## Features
+## MySQL/MariaDB database
 
-- Manage students and their grade levels
-- Track teachers and course assignments
-- Record enrollments and final grades
-- Monitor attendance percentages
-- Run simple reports from the command line
+`schema.sql` creates the `school_database` database and its InnoDB tables. It drops and recreates the tables, so running it again deletes existing data. `seed.sql` adds Nigerian sample data: 3 classes, 8 subjects, 6 teachers, 30 students, one term, 240 results, and 150 attendance records over five days.
 
-## Getting started
+Use MySQL 8.0.16+ or MariaDB 10.2.1+ so the score and date `CHECK` constraints are enforced. From a MySQL/MariaDB client, run:
 
-1. Open a terminal in this project folder.
-2. Run the database initializer:
+```sql
+SOURCE schema.sql;
+SOURCE seed.sql;
+```
 
-   python main.py init
+Or execute the files with the command-line client:
 
-3. Use the interactive menu:
+```text
+mysql -u your_user -p < schema.sql
+mysql -u your_user -p school_database < seed.sql
+```
 
-   python main.py
+## SQLite command-line demo
 
-4. Or run direct commands:
+The existing CLI uses `schema.sqlite.sql` and the local `school.db` file:
 
-   python main.py list-students
-   python main.py list-courses
-   python main.py student-report --student-id 1
-   python main.py course-roster --course-id 1
+```text
+python main.py init
+python main.py
+```
+
+It also supports direct commands:
+
+```text
+python main.py list-students
+python main.py list-courses
+python main.py student-report --student-id 1
+python main.py course-roster --course-id 1
+```
 
 ## File overview
 
-- `main.py` – CLI app and database logic
-- `schema.sql` – SQLite schema definitions
-- `school.db` – local database file created after initialization
-
-## Notes
-
-The app seeds sample data automatically when the database is first created, so you can immediately test reports and roster queries.
+- `schema.sql` – MySQL/MariaDB InnoDB schema
+- `seed.sql` – MySQL/MariaDB sample data
+- `schema.sqlite.sql` – schema used by the SQLite CLI
+- `main.py` – SQLite CLI app and database logic
+- `school.db` – local SQLite database created after initialization
