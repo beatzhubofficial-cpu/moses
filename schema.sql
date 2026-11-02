@@ -12,13 +12,14 @@ DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS class_subjects;
 DROP TABLE IF EXISTS academic_terms;
 DROP TABLE IF EXISTS subjects;
-DROP TABLE IF EXISTS teachers;
 DROP TABLE IF EXISTS classes;
+DROP TABLE IF EXISTS teachers;
 
 CREATE TABLE classes (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     class_name VARCHAR(30) NOT NULL,
     level ENUM('JSS 1', 'JSS 2', 'SS 1') NOT NULL,
+    form_teacher_id BIGINT UNSIGNED,
     PRIMARY KEY (id),
     UNIQUE KEY uq_classes_class_name (class_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -34,6 +35,12 @@ CREATE TABLE teachers (
     UNIQUE KEY uq_teachers_staff_number (staff_number),
     UNIQUE KEY uq_teachers_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE classes
+    -- Keep assigned form teachers; cascade key updates so class assignments remain valid.
+    ADD CONSTRAINT fk_classes_form_teacher
+        FOREIGN KEY (form_teacher_id) REFERENCES teachers (id)
+        ON DELETE RESTRICT ON UPDATE CASCADE;
 
 CREATE TABLE subjects (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
